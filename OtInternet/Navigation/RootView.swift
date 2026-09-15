@@ -10,7 +10,7 @@ struct RootView: View {
             NotesView().tabItem { Label("Notes", systemImage: "note.text") }.tag(3)
             MoreView().tabItem { Label("More", systemImage: "ellipsis") }.tag(4)
         }
-        .tint(.otBlue)
+        .tint(Color.otBlue)
     }
 }
 
@@ -56,7 +56,9 @@ struct HomeView: View {
                 .padding()
             }
             .background(Color.otInk.ignoresSafeArea())
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
         }
     }
 }
@@ -68,5 +70,5 @@ struct QuickCard: View {
 
 struct MetricRow: View {
     let symbol: String; let title: String; let value: String
-    var body: some View { HStack { Image(systemName: symbol).foregroundStyle(.otBlue).frame(width: 28); Text(title); Spacer(); Text(value).foregroundStyle(.secondary).font(.subheadline) } }
+    var body: some View { HStack { Image(systemName: symbol).foregroundStyle(Color.otBlue).frame(width: 28); Text(title); Spacer(); Text(value).foregroundStyle(.secondary).font(.subheadline) } }
 }
