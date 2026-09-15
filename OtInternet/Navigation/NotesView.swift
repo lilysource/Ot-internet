@@ -70,9 +70,7 @@ struct NoteEditor: View {
             .navigationTitle("Edit note")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { note.modifiedAt = .now; dismiss() }.bold()
-                }
+                ToolbarItem(placement: .confirmationAction) { Button("Done") { note.modifiedAt = .now; dismiss() }.bold() }
             }
         }
     }
