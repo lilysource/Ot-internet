@@ -3,7 +3,7 @@ import SwiftUI
 struct GamesView: View {
     @State private var show2048 = false
     @State private var showTicTacToe = false
-    @State private var selectedGame: String?
+    @State private var selectedGame: GameSelection?
     @EnvironmentObject private var store: OfflineStore
     private let games = [
         ("2048", "Merge numbers and reach 2048", "square.grid.2x2.fill", Color.orange),
@@ -24,14 +24,19 @@ struct GamesView: View {
                     Text(store.language == .khmer ? "លេងក្រៅបណ្តាញ។" : "Play offline.").font(.system(size: 36, weight: .bold, design: .rounded))
                     Text(store.language == .khmer ? "មិនត្រូវការទាញយក ឬអ៊ីនធឺណិតទេ។" : "No downloads. No connection. Just good games.").foregroundStyle(.secondary)
                     GlassCard { HStack { Image(systemName: "bolt.fill").foregroundStyle(.yellow); VStack(alignment: .leading) { Text("Recently played").font(.headline); Text("2048  ·  Best score saved locally").font(.caption).foregroundStyle(.secondary) }; Spacer(); Button("Play") { show2048 = true }.buttonStyle(.borderedProminent) } }
-                    LazyVStack(spacing: 10) { ForEach(games, id: \.0) { game in GameRow(game: game) { if game.0 == "2048" { show2048 = true } else if game.0 == "Tic-Tac-Toe" { showTicTacToe = true } else { selectedGame = game.0 } } } }
+                    LazyVStack(spacing: 10) { ForEach(games, id: \.0) { game in GameRow(game: game) { if game.0 == "2048" { show2048 = true } else if game.0 == "Tic-Tac-Toe" { showTicTacToe = true } else { selectedGame = GameSelection(id: game.0) } } } }
                 }.padding()
             }.background(Color.otInk.ignoresSafeArea()).navigationTitle("Games")
                 .sheet(isPresented: $show2048) { Game2048View() }
                 .sheet(isPresented: $showTicTacToe) { TicTacToeView() }
-                .sheet(item: $selectedGame) { OfflineMiniGameView(name: $0) }
+                .sheet(item: $selectedGame) { OfflineMiniGameView(name: $0.name) }
         }
     }
+}
+
+struct GameSelection: Identifiable {
+    let id: String
+    var name: String { id }
 }
 
 struct GameRow: View {
