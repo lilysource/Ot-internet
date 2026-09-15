@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct NotesView: View {
+struct OfflineNotesView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \.modifiedAt, order: .reverse) private var notes: [Note]
     @State private var search = ""
