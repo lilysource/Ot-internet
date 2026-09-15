@@ -29,4 +29,29 @@ struct Game2048View: View {
 }
 
 struct ScorePill: View { let title: String; let value: Int; var body: some View { VStack { Text(title).font(.caption2).foregroundStyle(.secondary); Text("\(value)").font(.headline.monospacedDigit()) }.padding(.horizontal, 14).padding(.vertical, 8).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12)) } }
-struct TileView: View { let value: Int; var body: some View { RoundedRectangle(cornerRadius: 9).fill(tileColor).overlay { Text(value == 0 ? "" : "\(value)").font(.title2.bold()).foregroundStyle(value > 4 ? .white : .black.opacity(0.7)) } ; private var tileColor: Color { switch value { case 0: return .white.opacity(0.07); case 2: return .orange.opacity(0.8); case 4: return .yellow.opacity(0.85); case 8: return .orange; case 16: return .red; case 32: return .pink; case 64: return .purple; default: return .blue } } }
+struct TileView: View {
+    let value: Int
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 9)
+            .fill(tileColor)
+            .overlay {
+                Text(value == 0 ? "" : "\(value)")
+                    .font(.title2.bold())
+                    .foregroundStyle(value > 4 ? .white : .black.opacity(0.7))
+            }
+    }
+
+    private var tileColor: Color {
+        switch value {
+        case 0: return .white.opacity(0.07)
+        case 2: return .orange.opacity(0.8)
+        case 4: return .yellow.opacity(0.85)
+        case 8: return .orange
+        case 16: return .red
+        case 32: return .pink
+        case 64: return .purple
+        default: return .blue
+        }
+    }
+}
