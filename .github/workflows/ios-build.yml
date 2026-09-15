@@ -16,7 +16,7 @@ jobs:
       - name: Resolve packages
         run: xcodebuild -resolvePackageDependencies -project OtInternet.xcodeproj -scheme OtInternet
       - name: Build
-        run: xcodebuild build -project OtInternet.xcodeproj -scheme OtInternet -destination 'platform=iOS Simulator,name=iPhone 15' CODE_SIGNING_ALLOWED=NO
+        run: xcodebuild build -project OtInternet.xcodeproj -target OtInternet -destination 'platform=iOS Simulator,name=iPhone 15' CODE_SIGNING_ALLOWED=NO
 
   signed-ipa:
     name: Archive and export signed IPA
@@ -25,13 +25,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check signing configuration
+        id: signing
         env:
           CERTIFICATE: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           PROFILE: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
         run: |
-          test -n "$CERTIFICATE" || { echo "Signing secrets are not configured; skipping signed IPA job."; exit 78; }
-          test -n "$PROFILE" || { echo "Signing secrets are incomplete."; exit 1; }
+          if [ -n "$CERTIFICATE" ] && [ -n "$PROFILE" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Signing secrets are not configured; skipping signed IPA steps."
+          fi
       - name: Install signing certificate and profile
+        if: steps.signing.outputs.available == 'true'
         env:
           CERTIFICATE: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           PROFILE: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
@@ -50,10 +56,13 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp "$PROFILE_PATH" ~/Library/MobileDevice/Provisioning\ Profiles/
       - name: Archive
-        run: xcodebuild archive -project OtInternet.xcodeproj -scheme OtInternet -archivePath $RUNNER_TEMP/OtInternet.xcarchive -configuration Release -allowProvisioningUpdates
+        if: steps.signing.outputs.available == 'true'
+        run: xcodebuild archive -project OtInternet.xcodeproj -target OtInternet -archivePath $RUNNER_TEMP/OtInternet.xcarchive -configuration Release -allowProvisioningUpdates
       - name: Export IPA
+        if: steps.signing.outputs.available == 'true'
         run: xcodebuild -exportArchive -archivePath $RUNNER_TEMP/OtInternet.xcarchive -exportPath $RUNNER_TEMP/export -exportOptionsPlist ExportOptions.plist
       - uses: actions/upload-artifact@v4
+        if: steps.signing.outputs.available == 'true'
         with:
           name: OtInternet-ipa
           path: ${{ runner.temp }}/export/*.ipa
