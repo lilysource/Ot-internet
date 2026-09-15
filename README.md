@@ -18,6 +18,6 @@ Open `OtInternet.xcodeproj` on macOS with Xcode 15 or newer. Select an iPhone Si
 
 ## CI and signing
 
-`.github/workflows/ios-build.yml` runs a simulator build on every push and pull request. To request a signed IPA, open **Actions > iOS Build > Run workflow**, enable **Build and export a signed IPA**, and start the workflow. A device IPA requires an Apple Developer team, a valid distribution certificate, and a matching provisioning profile. The workflow includes an optional signed archive path driven by GitHub Secrets; no signing material belongs in this repository. An unsigned archive or IPA cannot be installed on a physical iPhone.
+`.github/workflows/ios-build.yml` runs a simulator build on every push and pull request. To request a private device-testing IPA, open **Actions > iOS Build > Run workflow**, enable **Build a private signed IPA for device testing**, and start the workflow. This does not publish to the App Store or TestFlight. A device IPA still requires an Apple Developer team, a valid signing certificate, and a matching development or ad-hoc provisioning profile. An unsigned archive or IPA cannot be installed on a physical iPhone.
 
-Configure these secrets for signed builds: `BUILD_CERTIFICATE_BASE64`, `P12_PASSWORD`, `PROVISIONING_PROFILE_BASE64`, `KEYCHAIN_PASSWORD`, `APPLE_TEAM_ID`, and `BUNDLE_IDENTIFIER`. TestFlight publishing additionally requires App Store Connect API key secrets.
+Configure these secrets for the private IPA build: `BUILD_CERTIFICATE_BASE64`, `P12_PASSWORD`, `PROVISIONING_PROFILE_BASE64`, `KEYCHAIN_PASSWORD`, `APPLE_TEAM_ID`, and `BUNDLE_IDENTIFIER`. App Store Connect API keys are not needed for this private IPA workflow.
