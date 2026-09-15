@@ -22,7 +22,7 @@ struct Game2048View: View {
                 HStack { Button("New game") { withAnimation { game.restart() } }.buttonStyle(.borderedProminent); Button("Restart", role: .destructive) { withAnimation { game.restart() } }.buttonStyle(.bordered) }
                 Text("Swipe to move tiles").font(.footnote).foregroundStyle(.secondary)
                 Spacer()
-            }.padding().background(Color.otInk.ignoresSafeArea()).navigationTitle("2048").toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
+            }.padding().background(Color.otInk.ignoresSafeArea()).navigationTitle("2048").toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
             .alert("Game over", isPresented: .constant(game.isGameOver)) { Button("New game") { game.restart() } } message: { Text("No more moves. Your score was \(game.score).") }
         }
     }

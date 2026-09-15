@@ -39,7 +39,7 @@ struct NotesView: View {
             .navigationTitle("Notes")
             .searchable(text: $search, prompt: "Search notes")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .confirmationAction) {
                     Button { editing = Note(); context.insert(editing!) } label: { Image(systemName: "plus") }
                         .accessibilityLabel("New note")
                 }
@@ -52,6 +52,6 @@ struct NotesView: View {
 struct NoteEditor: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var note: Note
-    var body: some View { NavigationStack { Form { TextField("Title", text: $note.title); TextEditor(text: $note.body).frame(minHeight: 220); Toggle("Favorite", isOn: $note.isFavorite); Toggle("Pinned", isOn: $note.isPinned); Text("Created \(note.createdAt.formatted(date: .abbreviated, time: .shortened))").font(.caption).foregroundStyle(.secondary) }.navigationTitle("Edit note").toolbar { ToolbarItem(placement: .topBarLeading) { Button("Close") { dismiss() } }; ToolbarItem(placement: .topBarTrailing) { Button("Done") { note.modifiedAt = .now; dismiss() }.bold() } } }
+    var body: some View { NavigationStack { Form { TextField("Title", text: $note.title); TextEditor(text: $note.body).frame(minHeight: 220); Toggle("Favorite", isOn: $note.isFavorite); Toggle("Pinned", isOn: $note.isPinned); Text("Created \(note.createdAt.formatted(date: .abbreviated, time: .shortened))").font(.caption).foregroundStyle(.secondary) }.navigationTitle("Edit note").toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }; ToolbarItem(placement: .confirmationAction) { Button("Done") { note.modifiedAt = .now; dismiss() }.bold() } } }
     }
 }
