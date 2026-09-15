@@ -33,13 +33,23 @@ jobs:
           xcodebuild -version
       - name: Show project targets
         run: xcodebuild -list -project OtInternet.xcodeproj
+      - name: Find available iPhone simulator
+        run: |
+          xcrun simctl list devices available
+          SIMULATOR_ID=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/{print $2; exit}')
+          if [ -n "$SIMULATOR_ID" ]; then
+            echo "SIMULATOR_DESTINATION=platform=iOS Simulator,id=$SIMULATOR_ID" >> "$GITHUB_ENV"
+          else
+            echo "SIMULATOR_DESTINATION=generic/platform=iOS Simulator" >> "$GITHUB_ENV"
+            echo "No installed iPhone device found; using generic simulator destination."
+          fi
       - name: Build simulator
         run: |
           xcodebuild build \
             -project OtInternet.xcodeproj \
             -scheme OtInternet \
             -sdk iphonesimulator \
-            -destination 'generic/platform=iOS Simulator' \
+            -destination "$SIMULATOR_DESTINATION" \
             -derivedDataPath "$RUNNER_TEMP/DerivedData" \
             -resultBundlePath "$RUNNER_TEMP/OtInternet-build.xcresult" \
             CODE_SIGNING_ALLOWED=NO
