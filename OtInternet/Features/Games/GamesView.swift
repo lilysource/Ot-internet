@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GamesView: View {
     @State private var show2048 = false
+    @EnvironmentObject private var store: OfflineStore
     private let games = [
         ("2048", "Merge numbers and reach 2048", "square.grid.2x2.fill", Color.orange),
         ("Tic-Tac-Toe", "Classic local two-player", "xmark.octagon.fill", Color.blue),
@@ -18,8 +19,8 @@ struct GamesView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    Text("Play offline.").font(.system(size: 36, weight: .bold, design: .rounded))
-                    Text("No downloads. No connection. Just good games.").foregroundStyle(.secondary)
+                    Text(store.language == .khmer ? "លេងក្រៅបណ្តាញ។" : "Play offline.").font(.system(size: 36, weight: .bold, design: .rounded))
+                    Text(store.language == .khmer ? "មិនត្រូវការទាញយក ឬអ៊ីនធឺណិតទេ។" : "No downloads. No connection. Just good games.").foregroundStyle(.secondary)
                     GlassCard { HStack { Image(systemName: "bolt.fill").foregroundStyle(.yellow); VStack(alignment: .leading) { Text("Recently played").font(.headline); Text("2048  ·  Best score saved locally").font(.caption).foregroundStyle(.secondary) }; Spacer(); Button("Play") { show2048 = true }.buttonStyle(.borderedProminent) } }
                     LazyVStack(spacing: 10) { ForEach(games, id: \.0) { game in GameRow(game: game) { if game.0 == "2048" { show2048 = true } } } }
                 }.padding()

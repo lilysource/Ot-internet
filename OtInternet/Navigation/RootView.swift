@@ -17,21 +17,22 @@ struct RootView: View {
 struct HomeView: View {
     @EnvironmentObject private var store: OfflineStore
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    private var khmer: Bool { store.language == .khmer }
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Good to see you.").font(.title3).foregroundStyle(.secondary)
+                        Text(khmer ? "រីករាយដែលបានជួបអ្នក។" : "Good to see you.").font(.title3).foregroundStyle(.secondary)
                         Text("Ot Internet").font(.system(size: 38, weight: .bold, design: .rounded))
-                        Text("Your world, even without internet.").foregroundStyle(.secondary)
+                        Text(khmer ? "ពិភពលោករបស់អ្នក ទោះគ្មានអ៊ីនធឺណិតក៏ដោយ។" : "Your world, even without internet.").foregroundStyle(.secondary)
                     }
                     GlassCard {
                         HStack(spacing: 14) {
                             Image(systemName: "wifi.slash").font(.title2).foregroundStyle(.white).frame(width: 48, height: 48).background(.orange.gradient, in: Circle())
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("You're Offline").font(.headline)
-                                Text("No internet connection detected. Ot Internet is ready to work offline.").font(.caption).foregroundStyle(.secondary)
+                                Text(khmer ? "អ្នកនៅក្រៅបណ្តាញ" : "You're Offline").font(.headline)
+                                Text(khmer ? "មិនមានការតភ្ជាប់អ៊ីនធឺណិតទេ។ Ot Internet ត្រៀមរួចរាល់សម្រាប់ប្រើក្រៅបណ្តាញ។" : "No internet connection detected. Ot Internet is ready to work offline.").font(.caption).foregroundStyle(.secondary)
                             }
                         }
                     }
