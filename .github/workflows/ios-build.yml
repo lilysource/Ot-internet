@@ -32,7 +32,7 @@ jobs:
         run: |
           xcodebuild build \
             -project OtInternet.xcodeproj \
-            -target OtInternet \
+            -scheme OtInternet \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$RUNNER_TEMP/DerivedData" \
@@ -89,7 +89,7 @@ jobs:
         run: |
           xcodebuild archive \
             -project OtInternet.xcodeproj \
-            -target OtInternet \
+            -scheme OtInternet \
             -sdk iphoneos \
             -archivePath "$RUNNER_TEMP/OtInternet.xcarchive" \
             -configuration Release \
