@@ -16,12 +16,10 @@ struct OfflineNotesView: View {
                     ForEach(filtered) { note in
                         Button { editing = note } label: {
                             HStack {
-                                Image(systemName: note.isPinned ? "pin.fill" : "note.text")
-                                    .foregroundStyle(Color.otBlue)
+                                Image(systemName: note.isPinned ? "pin.fill" : "note.text").foregroundStyle(Color.otBlue)
                                 VStack(alignment: .leading) {
                                     Text(note.title.isEmpty ? "Untitled" : note.title).font(.headline)
-                                    Text(note.body.isEmpty ? "No additional text" : note.body)
-                                        .lineLimit(1).font(.caption).foregroundStyle(.secondary)
+                                    Text(note.body.isEmpty ? "No additional text" : note.body).lineLimit(1).font(.caption).foregroundStyle(.secondary)
                                 }
                                 Spacer()
                                 if note.isFavorite { Image(systemName: "star.fill").foregroundStyle(.yellow) }
@@ -52,6 +50,20 @@ struct OfflineNotesView: View {
 struct NoteEditor: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var note: Note
-    var body: some View { NavigationStack { Form { TextField("Title", text: $note.title); TextEditor(text: $note.body).frame(minHeight: 220); Toggle("Favorite", isOn: $note.isFavorite); Toggle("Pinned", isOn: $note.isPinned); Text("Created \(note.createdAt.formatted(date: .abbreviated, time: .shortened))").font(.caption).foregroundStyle(.secondary) }.navigationTitle("Edit note").toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }; ToolbarItem(placement: .confirmationAction) { Button("Done") { note.modifiedAt = .now; dismiss() }.bold() } } }
+    var body: some View {
+        NavigationStack {
+            Form {
+                TextField("Title", text: $note.title)
+                TextEditor(text: $note.body).frame(minHeight: 220)
+                Toggle("Favorite", isOn: $note.isFavorite)
+                Toggle("Pinned", isOn: $note.isPinned)
+                Text("Created \(note.createdAt.formatted(date: .abbreviated, time: .shortened))").font(.caption).foregroundStyle(.secondary)
+            }
+            .navigationTitle("Edit note")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) { Button("Done") { note.modifiedAt = .now; dismiss() }.bold() }
+            }
+        }
     }
 }
