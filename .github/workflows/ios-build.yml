@@ -39,28 +39,6 @@ jobs:
       - name: Show Xcode project
         run: xcodebuild -list -project "$PROJECT"
 
-      - name: Find simulator destination
-        run: |
-          xcrun simctl list devices available || true
-          SIMULATOR_ID=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/{print $2; exit}')
-          if [ -n "$SIMULATOR_ID" ]; then
-            echo "SIMULATOR_DESTINATION=platform=iOS Simulator,id=$SIMULATOR_ID" >> "$GITHUB_ENV"
-          else
-            echo "SIMULATOR_DESTINATION=generic/platform=iOS Simulator" >> "$GITHUB_ENV"
-          fi
-
-      - name: Build simulator
-        run: |
-          xcodebuild build \
-            -project "$PROJECT" \
-            -scheme "$SCHEME" \
-            -configuration Debug \
-            -sdk iphonesimulator \
-            -destination "$SIMULATOR_DESTINATION" \
-            -derivedDataPath "$DERIVED_DATA" \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO
-
       - name: Archive unsigned device build
         run: |
           xcodebuild archive \

@@ -18,6 +18,6 @@ Open `OtInternet.xcodeproj` on macOS with Xcode 15 or newer. Select an iPhone Si
 
 ## CI and signing
 
-`.github/workflows/ios-build.yml` runs a simulator build, unsigned device archive, and unsigned IPA package on every push and pull request. Open **Actions > Ot Internet iOS Build**, select a run, and download the `OtInternet-iOS-IPA` artifact. Import `OtInternet-unsigned.ipa` into eSign for re-signing. This does not publish to the App Store or TestFlight. An unsigned IPA cannot install directly; eSign must sign it with a certificate and provisioning profile that supports the target device.
+`.github/workflows/ios-build.yml` creates an unsigned device archive and IPA package on every push and pull request. It does not require an iOS Simulator runtime. Open **Actions > Ot Internet iOS Build**, select a run, and download the `OtInternet-iOS-IPA` artifact. Import `OtInternet-unsigned.ipa` into eSign for re-signing. This does not publish to the App Store or TestFlight. An unsigned IPA cannot install directly; eSign must sign it with a certificate and provisioning profile that supports the target device.
 
 No Apple signing secrets are required for this unsigned eSign artifact. The workflow also uploads `OtInternet-XCArchive` for debugging and reuse. App Store Connect API keys are not needed.
