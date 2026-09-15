@@ -11,6 +11,11 @@ on:
         required: true
         default: false
         type: boolean
+      build_unsigned_ipa:
+        description: "Build an unsigned IPA to import into eSign"
+        required: true
+        default: true
+        type: boolean
 
 jobs:
   simulator:
@@ -122,3 +127,39 @@ jobs:
         with:
           name: OtInternet-ipa
           path: ${{ runner.temp }}/export/*.ipa
+
+  unsigned-ipa:
+    name: Build unsigned IPA for eSign
+    if: github.event_name == 'workflow_dispatch' && inputs.build_unsigned_ipa == true
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select available Xcode
+        run: |
+          if [ -d "/Applications/Xcode_16.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.4.app
+          elif [ -d "/Applications/Xcode_16.3.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.3.app
+          fi
+          xcodebuild -version
+      - name: Archive without Apple signing
+        run: |
+          xcodebuild archive \
+            -project OtInternet.xcodeproj \
+            -scheme OtInternet \
+            -sdk iphoneos \
+            -archivePath "$RUNNER_TEMP/OtInternet-unsigned.xcarchive" \
+            -configuration Release \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+      - name: Package IPA for eSign
+        run: |
+          mkdir -p "$RUNNER_TEMP/unsigned-ipa/Payload"
+          cp -R "$RUNNER_TEMP/OtInternet-unsigned.xcarchive/Products/Applications/OtInternet.app" "$RUNNER_TEMP/unsigned-ipa/Payload/"
+          cd "$RUNNER_TEMP/unsigned-ipa"
+          zip -qry "$RUNNER_TEMP/OtInternet-eSign.ipa" Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OtInternet-eSign-unsigned-ipa
+          path: ${{ runner.temp }}/OtInternet-eSign.ipa
