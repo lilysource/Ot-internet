@@ -56,7 +56,7 @@ struct GameGuideView: View {
                 Text(khmer ? "បញ្ចូលលេខដូចគ្នា ដើម្បីបង្កើតលេខធំៗ ហើយព្យាយាមឱ្យបាន 2048។" : "Merge matching numbers to make bigger tiles and reach 2048.")
                 Label(khmer ? "គន្លឹះលេង" : "Simple strategy", systemImage: "lightbulb.fill").font(.title2.bold()).foregroundStyle(.yellow)
                 Text(khmer ? "រក្សាលេខធំបំផុតនៅជ្រុងមួយ។ រៀបចំលេខតាមជួរ ហើយកុំផ្លាស់ទីដោយចៃដន្យ។" : "Keep your biggest tile in one corner. Build rows carefully and avoid random moves.")
-                Label(khmer ? "ចាប់ផ្តើម" : "Easy controls", systemImage: "hand.draw").font(.title2.bold()).foregroundStyle(.otBlue)
+                Label(khmer ? "ចាប់ផ្តើម" : "Easy controls", systemImage: "hand.draw").font(.title2.bold()).foregroundStyle(Color.otBlue)
                 Text(khmer ? "អូសក្តារហ្គេម ឬចុចប៊ូតុងព្រួញ។ ហ្គេមនេះដំណើរការដោយគ្មានអ៊ីនធឺណិត។" : "Swipe the board or tap the arrow buttons. The game works fully offline.")
                 Spacer()
             }.padding().navigationTitle(khmer ? "របៀបលេង" : "How to play")
