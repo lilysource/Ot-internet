@@ -4,7 +4,7 @@
  classes = { };
  objectVersion = 56;
  objects = {
-  111111111111111111111111 /* Project object */ = { isa = PBXProject; attributes = { LastSwiftUpdateCheck = 1540; }; buildConfigurationList = 222222222222222222222222 /* Project configs */; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = ( en, ); mainGroup = 333333333333333333333333; productRefGroup = 444444444444444444444444; projectDirPath = ""; projectRoot = ""; targets = ( 555555555555555555555555 ); };
+  111111111111111111111111 /* Project object */ = { isa = PBXProject; attributes = { LastSwiftUpdateCheck = 1540; }; buildConfigurationList = 222222222222222222222222 /* Project configs */; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = ( en, ); mainGroup = 333333333333333333333333; productRefGroup = 777777777777777777777777; projectDirPath = ""; projectRoot = ""; targets = ( 555555555555555555555555 ); };
   333333333333333333333333 = { isa = PBXGroup; children = ( 666666666666666666666666, 777777777777777777777777 ); sourceTree = "<group>"; };
   666666666666666666666666 = { isa = PBXGroup; children = ( 888888888888888888888888, 999999999999999999999999, AAAAAAAAAAAAAAAAAAAAAAAA, BBBBBBBBBBBBBBBBBBBBBBBB, CCCCCCCCCCCCCCCCCCCCCCCC, DDDDDDDDDDDDDDDDDDDDDDDD, EEEEEEEEEEEEEEEEEEEEEEEE, FFFFFFFFFFFFFFFFFFFFFFFF ); path = OtInternet; sourceTree = "<group>"; };
   777777777777777777777777 = { isa = PBXGroup; children = ( 121212121212121212121212 ); name = Products; sourceTree = "<group>"; };

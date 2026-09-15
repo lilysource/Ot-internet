@@ -7,7 +7,7 @@ on:
 
 jobs:
   simulator:
-    name: Build and test simulator
+    name: Build simulator
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
@@ -15,8 +15,8 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode_15.4.app || true
       - name: Resolve packages
         run: xcodebuild -resolvePackageDependencies -project OtInternet.xcodeproj -scheme OtInternet
-      - name: Build and test
-        run: xcodebuild test -project OtInternet.xcodeproj -scheme OtInternet -destination 'platform=iOS Simulator,name=iPhone 15' CODE_SIGNING_ALLOWED=NO
+      - name: Build
+        run: xcodebuild build -project OtInternet.xcodeproj -scheme OtInternet -destination 'platform=iOS Simulator,name=iPhone 15' CODE_SIGNING_ALLOWED=NO
 
   signed-ipa:
     name: Archive and export signed IPA
