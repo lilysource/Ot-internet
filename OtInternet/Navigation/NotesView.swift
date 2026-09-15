@@ -3,7 +3,7 @@ import SwiftData
 
 struct NotesView: View {
     @Environment(\.modelContext) private var context
-    @Query(sort: \.modifiedAt, order: .reverse) private var notes: [Note]
+    @Query(sort: [SortDescriptor<Note>(\.modifiedAt, order: .reverse)]) private var notes: [Note]
     @State private var search = ""
     @State private var editing: Note?
 
