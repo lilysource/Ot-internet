@@ -31,5 +31,5 @@ struct GamesView: View {
 
 struct GameRow: View {
     let game: (String, String, String, Color); let action: () -> Void
-    var body: some View { GlassCard { HStack(spacing: 13) { IconBadge(symbol: game.2, color: game.3); VStack(alignment: .leading, spacing: 4) { Text(game.0).font(.headline); Text(game.1).font(.caption).foregroundStyle(.secondary); Text("Best score saved locally").font(.caption2).foregroundStyle(.secondary) }; Spacer(); Button("Play", action: action).buttonStyle(.bordered).tint(.otBlue) } } }
+    var body: some View { GlassCard { HStack(spacing: 13) { IconBadge(symbol: game.2, color: game.3); VStack(alignment: .leading, spacing: 4) { Text(game.0).font(.headline); Text(game.1).font(.caption).foregroundStyle(.secondary); Text("Best score saved locally").font(.caption2).foregroundStyle(.secondary) }; Spacer(); Button("Play", action: action).buttonStyle(.bordered).tint(Color.otBlue) } } }
 }

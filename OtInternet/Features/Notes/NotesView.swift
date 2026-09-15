@@ -9,7 +9,42 @@ struct NotesView: View {
     var filtered: [Note] { search.isEmpty ? notes : notes.filter { $0.title.localizedCaseInsensitiveContains(search) || $0.body.localizedCaseInsensitiveContains(search) } }
     var body: some View {
         NavigationStack {
-            List { if filtered.isEmpty { ContentUnavailableView("No notes yet", systemImage: "note.text", description: Text("Create a note to keep ideas available offline.")) } else { ForEach(filtered) { note in Button { editing = note } label: { HStack { Image(systemName: note.isPinned ? "pin.fill" : "note.text").foregroundStyle(.otBlue); VStack(alignment: .leading) { Text(note.title.isEmpty ? "Untitled" : note.title).font(.headline); Text(note.body.isEmpty ? "No additional text" : note.body).lineLimit(1).font(.caption).foregroundStyle(.secondary) }; Spacer(); if note.isFavorite { Image(systemName: "star.fill").foregroundStyle(.yellow) } } }.swipeActions { Button(role: .destructive) { context.delete(note) } label: { Label("Delete", systemImage: "trash") } } } }.onDelete { offsets in offsets.map { filtered[$0] }.forEach(context.delete) } }.scrollContentBackground(.hidden).background(Color.otInk).navigationTitle("Notes").searchable(text: $search, prompt: "Search notes").toolbar { ToolbarItem(placement: .topBarTrailing) { Button { editing = Note(); context.insert(editing!) } label: { Image(systemName: "plus") }.accessibilityLabel("New note") } }.sheet(item: $editing) { NoteEditor(note: $0) }
+            List {
+                if filtered.isEmpty {
+                    ContentUnavailableView("No notes yet", systemImage: "note.text", description: Text("Create a note to keep ideas available offline."))
+                } else {
+                    ForEach(filtered) { note in
+                        Button { editing = note } label: {
+                            HStack {
+                                Image(systemName: note.isPinned ? "pin.fill" : "note.text")
+                                    .foregroundStyle(Color.otBlue)
+                                VStack(alignment: .leading) {
+                                    Text(note.title.isEmpty ? "Untitled" : note.title).font(.headline)
+                                    Text(note.body.isEmpty ? "No additional text" : note.body)
+                                        .lineLimit(1).font(.caption).foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                if note.isFavorite { Image(systemName: "star.fill").foregroundStyle(.yellow) }
+                            }
+                        }
+                        .swipeActions {
+                            Button(role: .destructive) { context.delete(note) } label: { Label("Delete", systemImage: "trash") }
+                        }
+                    }
+                    .onDelete { offsets in offsets.map { filtered[$0] }.forEach(context.delete) }
+                }
+            }
+            .scrollContentBackground(.hidden)
+            .background(Color.otInk)
+            .navigationTitle("Notes")
+            .searchable(text: $search, prompt: "Search notes")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { editing = Note(); context.insert(editing!) } label: { Image(systemName: "plus") }
+                        .accessibilityLabel("New note")
+                }
+            }
+            .sheet(item: $editing) { NoteEditor(note: $0) }
         }
     }
 }
